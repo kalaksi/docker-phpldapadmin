@@ -1,0 +1,23 @@
+#
+# XXX: This is an alternative Dockerfile using Alpine and the vanilla phpldapadmin sources.
+#      However, this isn't usable as is because the sources would need patching for PHP 5.6 and PHP 7.
+#      I originally started this Dockerfile because the Debian package hadn't backported security patches,
+#      but now it seems to have done that. This file may prove useful later on.
+#
+
+FROM php:5.6.38-fpm-alpine3.8
+LABEL maintainer="kalaksi@users.noreply.github.com"
+
+# See the docker-compose.yml file for an example on how to fully utilize this container using nginx.
+
+ARG PHPLDAPADMIN_VERSION=1.2.3
+ARG PHPLDAPADMIN_SHA256=aecaf8c3ce77ba3899dd31ee5ee183555b2f9349eb8e196dcd33d8a3c485ed58
+
+ADD "https://downloads.sourceforge.net/project/phpldapadmin/phpldapadmin-php5/${PHPLDAPADMIN_VERSION}/phpldapadmin-${PHPLDAPADMIN_VERSION}.tgz" /var/www/phpldapadmin.tgz
+
+RUN (echo "$PHPLDAPADMIN_SHA256  /var/www/phpldapadmin.tgz" | sha256sum -c -) && \
+    mkdir -p /var/www/phpldapadmin && \
+    tar -xzf "/var/www/phpldapadmin.tgz" --strip 1 -C /var/www/phpldapadmin && \
+    rm -r /var/www/phpldapadmin/doc && \
+    rm /var/www/phpldapadmin.tgz
+
