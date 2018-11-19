@@ -15,14 +15,14 @@ To remedy the situation, these images have been written with security and simpli
 This container only contains phpldapadmin and the necessary PHP (PHP-FPM) packages. In other words, this container only runs the PHP process and no HTTP server (which is how things should be).  
 You will therefore need an accompanying HTTP server. Luckily, the ```docker-compose.yml``` in the source repository contains a complete example of running this container with nginx and will work without additional steps.
 
+#### Configuration
+By default, the configuration files can be found on the named volume and is currently the only way to configure phpldapadmin.
+See ```Dockerfile``` and ```docker-compose.yml``` (<https://github.com/kalaksi/docker-phpldapadmin>) for more details.
+
 #### Supported tags
 See the ```Tags``` tab on Docker Hub for specifics. Basically you have:
 - The default ```latest``` tag that always has the latest changes.
 - Minor versioned tags (follow Semantic Versioning), e.g. ```1.1``` which would follow branch ```1.1.x``` on GitHub.
-
-#### Configuration
-By default, the configuration files can be found on the named volume and is currently the only way to configure phpldapadmin.
-See ```Dockerfile``` and ```docker-compose.yml``` (<https://github.com/kalaksi/docker-phpldapadmin>) for more details.
 
 ### Development
 #### Design Goals
