@@ -3,21 +3,29 @@ services:
   phpldapadmin:
     image: kalaksi/phpldapadmin
     container_name: phpldapadmin
+    cap_drop:
+      - ALL
     volumes:
       - phpldapadmin_htdocs:/usr/share/phpldapadmin/htdocs
       - phpldapadmin_config:/etc/phpldapadmin
       - phpldapadmin_nginx_config:/etc/nginx/conf.d
-
   nginx:
     image: nginx:stable
     container_name: phpldapadmin-frontend
+    cap_drop:
+      - ALL
+    cap_add:
+      - CHOWN
+      - DAC_OVERRIDE
+      - SETUID
+      - SETGID
     volumes:
       - phpldapadmin_nginx_config:/etc/nginx/conf.d:ro
       - phpldapadmin_htdocs:/usr/share/phpldapadmin/htdocs:ro
     ports:
-      - 80:80/tcp
+      - 80:8080/tcp
       # You need to set up HTTPS yourself if necessary.
-      # - 443:443/tcp
+      # - 443:8443/tcp
 
 volumes:
   # Feel free to use other mechanisms for sharing configuration between containers if available.
