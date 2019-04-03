@@ -12,6 +12,8 @@ services:
   nginx:
     image: nginx:stable
     container_name: phpldapadmin-frontend
+    depends_on:
+      - phpldapadmin
     cap_drop:
       - ALL
     cap_add:
@@ -25,6 +27,7 @@ services:
     ports:
       - 80:8080/tcp
       # You need to set up HTTPS yourself if necessary.
+      # Basically you need to generate the cert, move it to the config dir and edit the nginx configuration.
       # - 443:8443/tcp
 
 volumes:
