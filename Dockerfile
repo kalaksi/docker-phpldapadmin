@@ -42,7 +42,7 @@ RUN mv /usr/share/phpldapadmin/htdocs /usr/share/phpldapadmin/htdocs.orig && \
 
 USER ${PHPLDAPADMIN_UID}:${PHPLDAPADMIN_GID}
 
-# Make sure any updates to phpldapadmin get copied to the htdocs data volume.
+# Makes sure any updates to phpldapadmin get copied to the htdocs data volume.
 CMD set -eu; \
     /bin/cp -ua /usr/share/phpldapadmin/htdocs.orig/* /usr/share/phpldapadmin/htdocs/; \
     exec /usr/sbin/php5-fpm -c /etc/php5/fpm/php.ini -d 'error_reporting=E_COMPILE_ERROR|E_RECOVERABLE_ERROR|E_ERROR|E_CORE_ERROR'
