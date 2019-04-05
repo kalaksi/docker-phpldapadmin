@@ -1,8 +1,8 @@
-version: 2
+version: '2'
 services:
   phpldapadmin:
     image: kalaksi/phpldapadmin
-    container_name: phpldapadmin
+    restart: unless-stopped
     cap_drop:
       - ALL
     volumes:
@@ -11,7 +11,7 @@ services:
       - phpldapadmin_nginx_config:/etc/nginx/conf.d
   nginx:
     image: nginx:stable
-    container_name: phpldapadmin-frontend
+    restart: unless-stopped
     depends_on:
       - phpldapadmin
     cap_drop:
