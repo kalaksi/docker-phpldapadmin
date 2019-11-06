@@ -1,4 +1,4 @@
-FROM debian:stretch-slim
+FROM debian:jessie-slim
 LABEL maintainer="kalaksi@users.noreply.github.com"
 
 # Some notes about the choices behind this Dockerfile:
