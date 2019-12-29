@@ -1,6 +1,6 @@
 
 ## Repositories
-- [Docker Hub repository](https://registry.hub.docker.com/u/kalaksi/phpldapadmin/)
+- [Docker Hub repository](https://hub.docker.com/r/kalaksi/phpldapadmin/)
 - [GitHub repository](https://github.com/kalaksi/docker-phpldapadmin)
 
 ## Why use this container?
