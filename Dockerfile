@@ -1,7 +1,7 @@
 # Copyright (c) 2018 kalaksi@users.noreply.github.com.
 # This work is licensed under the terms of the MIT license. For a copy, see <https://opensource.org/licenses/MIT>.
 
-FROM debian:jessie-slim
+FROM debian:8.11-slim
 LABEL maintainer="kalaksi@users.noreply.github.com"
 
 # Some notes about the choices behind this Dockerfile:
@@ -13,7 +13,7 @@ LABEL maintainer="kalaksi@users.noreply.github.com"
 ENV PHPLDAPADMIN_UID 70859
 ENV PHPLDAPADMIN_GID 70859
 
-# Some trickstery is needed to avoid unnecessary dependencies
+# Some trickery is needed to avoid unnecessary dependencies
 RUN apt-get update && DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends \
       php5-fpm \
       php5-ldap \
@@ -33,7 +33,8 @@ RUN sed -Ei 's|^listen =.*|listen = [::]:9000|' /etc/php5/fpm/pool.d/www.conf &&
     sed -Ei 's|^;?daemonize =.*|daemonize = no|' /etc/php5/fpm/php-fpm.conf && \
     sed -Ei 's|^;?pid =(.*)|;pid =\1|' /etc/php5/fpm/php-fpm.conf
 
-# Add default configuration for nginx. Using separate directory so it's simpler to mount to vanilla nginx-container.
+# Add default configuration for nginx. This Using separate directory so it's simpler to mount to vanilla nginx-container.
+# See docker-compose.yml for an example.
 COPY nginx.conf /etc/nginx/conf.d/phpldapadmin.conf
 
 # You should mount a volume on path /usr/share/phpldapadmin/htdocs for sharing the htdocs between this container
@@ -47,5 +48,5 @@ USER ${PHPLDAPADMIN_UID}:${PHPLDAPADMIN_GID}
 
 # Makes sure any updates to phpldapadmin get copied to the htdocs data volume.
 CMD set -eu; \
-    /bin/cp -ua /usr/share/phpldapadmin/htdocs.orig/* /usr/share/phpldapadmin/htdocs/; \
+    cp -ua /usr/share/phpldapadmin/htdocs.orig/. /usr/share/phpldapadmin/htdocs/; \
     exec /usr/sbin/php5-fpm -c /etc/php5/fpm/php.ini -d 'error_reporting=E_COMPILE_ERROR|E_RECOVERABLE_ERROR|E_ERROR|E_CORE_ERROR'
