@@ -19,6 +19,7 @@ RUN echo 'deb http://deb.debian.org/debian stretch-backports main' > /etc/apt/so
 RUN apt-get update && DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends \
       php7.0-fpm \
       php7.0-ldap \
+      php7.0-xml \
       ucf && \
     apt-get download phpldapadmin && \
     DEBIAN_FRONTEND=noninteractive dpkg --force-all -i phpldapadmin_*.deb && \
