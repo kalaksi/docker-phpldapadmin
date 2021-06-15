@@ -15,6 +15,7 @@ To remedy the situation, these images have been written with security, simplicit
 |-------------------------|:----:|-------|
 |Don't run as root        |✅    | Never run as root unless necessary.|
 |Official base image      |✅    | |
+|Healthcheck configured   |✅    | |
 |Drop extra CAPabilities  |✅    | See ```docker-compose.yml``` |
 |No default passwords     |✅    | No static default passwords. That would make the container insecure by default. |
 |Support secrets-files    |✅    | Support providing e.g. passwords via files instead of environment variables. |

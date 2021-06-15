@@ -1,4 +1,4 @@
-version: '2'
+version: '3.4'
 services:
   phpldapadmin:
     image: kalaksi/phpldapadmin
@@ -9,7 +9,7 @@ services:
       - phpldapadmin_htdocs:/usr/share/phpldapadmin/htdocs
       - phpldapadmin_config:/etc/phpldapadmin
       - phpldapadmin_nginx_config:/etc/nginx/conf.d
-  nginx:
+  http-server:
     image: nginx:stable
     restart: unless-stopped
     depends_on:
@@ -28,7 +28,14 @@ services:
       - 80:8080/tcp
       # You need to set up HTTPS yourself if necessary.
       # Basically you need to generate the cert, move it to the config dir and edit the nginx configuration.
+      # Remember to change `http` to `https` in the healthcheck, too.
       # - 443:8443/tcp
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8080"]
+      interval: 5m
+      timeout: 10s
+      retries: 1
+      start_period: 10s
 
 volumes:
   # Feel free to use other mechanisms for sharing configuration between containers if available.
