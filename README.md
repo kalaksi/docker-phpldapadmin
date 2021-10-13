@@ -1,6 +1,7 @@
 
 ## Repositories
-- [Docker Hub repository](https://hub.docker.com/r/kalaksi/phpldapadmin/)
+- [GitLab repository](https://gitlab.com/kalaksi-containers/phpldapadmin/) (image: `registry.gitlab.com/kalaksi-containers/phpldapadmin`)
+- [Docker Hub repository](https://hub.docker.com/r/kalaksi/phpldapadmin/) (image: `docker.io/kalaksi/phpldapadmin`)
 - [GitHub repository](https://github.com/kalaksi/docker-phpldapadmin)
 
 ## Why use this container?
@@ -11,17 +12,18 @@ On top of that, overly complex shell scripts, monolithic designs and unofficial 
 
 To remedy the situation, these images have been written with security, simplicity and overall quality in mind.
 
-|Requirement              |Status|Details|
-|-------------------------|:----:|-------|
-|Don't run as root        |✅    | Never run as root unless necessary.|
-|Official base image      |✅    | |
-|Healthcheck configured   |✅    | |
-|Drop extra CAPabilities  |✅    | See ```docker-compose.yml``` |
-|No default passwords     |✅    | No static default passwords. That would make the container insecure by default. |
-|Support secrets-files    |✅    | Support providing e.g. passwords via files instead of environment variables. |
-|Handle signals properly  |✅    | |
-|Simple Dockerfile        |✅    | No overextending  container's responsibilities. Keep everything in the Dockerfile if reasonable. |
-|Versioned tags           |✅    | Offer versioned tags for stability.|
+|Requirement                |Status|Details|
+|---------------------------|:----:|-------|
+|Don't run as root          |✅    | Never run as root unless necessary.|
+|Transparent build process  |✅    | For verifying that the container matches the code. See GitLab CI. |
+|Official base image        |✅    | |
+|Healthcheck configured     |✅    | |
+|Drop extra CAPabilities    |✅    | See ```docker-compose.yml``` |
+|No default passwords       |✅    | No static default passwords. That would make the container insecure by default. |
+|Support secrets-files      |✅    | Support providing e.g. passwords via files instead of environment variables. |
+|Handle signals properly    |✅    | |
+|Simple Dockerfile          |✅    | No overextending  container's responsibilities. Keep everything in the Dockerfile if reasonable. |
+|Versioned tags             |✅    | Offer versioned tags for stability.|
 
 ## Running this container
 This container only contains phpldapadmin and the necessary PHP (PHP-FPM) packages. In other words, this container only runs the PHP process and no HTTP server (which is how things should be).  
