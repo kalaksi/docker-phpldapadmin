@@ -1,7 +1,7 @@
 # Copyright (c) 2018 kalaksi@users.noreply.github.com.
 # This work is licensed under the terms of the MIT license. For a copy, see <https://opensource.org/licenses/MIT>.
 
-FROM debian:9.13-slim
+FROM debian:12.0-slim
 LABEL maintainer="kalaksi@users.noreply.github.com"
 
 # Some notes about the choices behind this Dockerfile:
@@ -12,14 +12,11 @@ LABEL maintainer="kalaksi@users.noreply.github.com"
 ENV PHPLDAPADMIN_UID 70859
 ENV PHPLDAPADMIN_GID 70859
 
-# phpldapadmin is only available in stretch-backports
-RUN echo 'deb http://deb.debian.org/debian stretch-backports main' > /etc/apt/sources.list.d/backports.list
-
 # Some trickery is needed to avoid unnecessary dependencies
 RUN apt-get update && DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends \
-      php7.0-fpm \
-      php7.0-ldap \
-      php7.0-xml \
+      php8.2-fpm \
+      php8.2-ldap \
+      php8.2-xml \
       ucf && \
     apt-get download phpldapadmin && \
     DEBIAN_FRONTEND=noninteractive dpkg --force-all -i phpldapadmin_*.deb && \
@@ -28,13 +25,12 @@ RUN apt-get update && DEBIAN_FRONTEND=noninteractive apt-get install -y --no-ins
     rm -rf /var/lib/apt/lists
 
 # Configure PHP.
-RUN sed -Ei 's|^listen =.*|listen = [::]:9000|' /etc/php/7.0/fpm/pool.d/www.conf && \
-    sed -Ei 's|^;?access.log =.*|access.log = /proc/self/fd/2|' /etc/php/7.0/fpm/pool.d/www.conf && \
-    sed -Ei 's|^;?catch_workers_output =.*|catch_workers_output = yes|' /etc/php/7.0/fpm/pool.d/www.conf && \
-    sed -Ei 's|^;?clear_env =.*|clear_env = no|' /etc/php/7.0/fpm/pool.d/www.conf && \
-    sed -Ei 's|^;?error_log =.*|error_log = /proc/self/fd/2|' /etc/php/7.0/fpm/php-fpm.conf && \
-    sed -Ei 's|^;?daemonize =.*|daemonize = no|' /etc/php/7.0/fpm/php-fpm.conf && \
-    mkdir /run/php && \
+RUN sed -Ei 's|^listen =.*|listen = [::]:9000|' /etc/php/8.2/fpm/pool.d/www.conf && \
+    sed -Ei 's|^;?access.log =.*|access.log = /proc/self/fd/2|' /etc/php/8.2/fpm/pool.d/www.conf && \
+    sed -Ei 's|^;?catch_workers_output =.*|catch_workers_output = yes|' /etc/php/8.2/fpm/pool.d/www.conf && \
+    sed -Ei 's|^;?clear_env =.*|clear_env = no|' /etc/php/8.2/fpm/pool.d/www.conf && \
+    sed -Ei 's|^;?error_log =.*|error_log = /proc/self/fd/2|' /etc/php/8.2/fpm/php-fpm.conf && \
+    sed -Ei 's|^;?daemonize =.*|daemonize = no|' /etc/php/8.2/fpm/php-fpm.conf && \
     chown ${PHPLDAPADMIN_UID}:${PHPLDAPADMIN_GID} /run/php
 
 # Add default configuration for nginx. This Using separate directory so it's simpler to mount to vanilla nginx-container.
@@ -53,4 +49,4 @@ USER ${PHPLDAPADMIN_UID}:${PHPLDAPADMIN_GID}
 # Makes sure any updates to phpldapadmin get copied to the htdocs data volume.
 CMD set -eu; \
     cp -ua /usr/share/phpldapadmin/htdocs.orig/. /usr/share/phpldapadmin/htdocs/; \
-    exec /usr/sbin/php-fpm7.0 -c /etc/php/7.0/fpm/php.ini -d 'error_reporting=E_COMPILE_ERROR|E_RECOVERABLE_ERROR|E_ERROR|E_CORE_ERROR'
+    exec /usr/sbin/php-fpm8.2 -c /etc/php/8.2/fpm/php.ini -d 'error_reporting=E_COMPILE_ERROR|E_RECOVERABLE_ERROR|E_ERROR|E_CORE_ERROR'
