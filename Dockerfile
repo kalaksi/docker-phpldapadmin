@@ -1,7 +1,7 @@
 # Copyright (c) 2018 kalaksi@users.noreply.github.com.
 # This work is licensed under the terms of the MIT license. For a copy, see <https://opensource.org/licenses/MIT>.
 
-FROM debian:12.0-slim
+FROM debian:12.1-slim
 LABEL maintainer="kalaksi@users.noreply.github.com"
 
 # Some notes about the choices behind this Dockerfile:
@@ -31,9 +31,10 @@ RUN sed -Ei 's|^listen =.*|listen = [::]:9000|' /etc/php/8.2/fpm/pool.d/www.conf
     sed -Ei 's|^;?clear_env =.*|clear_env = no|' /etc/php/8.2/fpm/pool.d/www.conf && \
     sed -Ei 's|^;?error_log =.*|error_log = /proc/self/fd/2|' /etc/php/8.2/fpm/php-fpm.conf && \
     sed -Ei 's|^;?daemonize =.*|daemonize = no|' /etc/php/8.2/fpm/php-fpm.conf && \
+    sed -Ei 's|^;?session.gc_probability =.*|session.gc_probability = 1|' /etc/php/8.2/fpm/php.ini && \
     chown ${PHPLDAPADMIN_UID}:${PHPLDAPADMIN_GID} /run/php
 
-# Add default configuration for nginx. This Using separate directory so it's simpler to mount to vanilla nginx-container.
+# Add default configuration for nginx. Using a separate directory so it's simpler to mount to vanilla nginx-container.
 # See docker-compose.yml for an example.
 COPY nginx.conf /etc/nginx/conf.d/phpldapadmin.conf
 
