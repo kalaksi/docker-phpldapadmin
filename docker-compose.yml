@@ -1,4 +1,3 @@
-version: '3.4'
 services:
   phpldapadmin:
     image: docker.io/kalaksi/phpldapadmin
