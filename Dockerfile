@@ -9,8 +9,8 @@ LABEL maintainer="kalaksi@users.noreply.github.com"
 # - Using Debian package since they have already done the heavy lifting of patching the sources.
 
 # Use a custom UID/GID that has a smaller chance for collisions with the host and other containers.
-ENV PHPLDAPADMIN_UID 70859
-ENV PHPLDAPADMIN_GID 70859
+ENV PHPLDAPADMIN_UID=70859
+ENV PHPLDAPADMIN_GID=70859
 
 # Some trickery is needed to avoid unnecessary dependencies
 RUN apt-get update && DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends \
@@ -48,6 +48,4 @@ RUN mv /usr/share/phpldapadmin/htdocs /usr/share/phpldapadmin/htdocs.orig && \
 USER ${PHPLDAPADMIN_UID}:${PHPLDAPADMIN_GID}
 
 # Makes sure any updates to phpldapadmin get copied to the htdocs data volume.
-CMD set -eu; \
-    cp -ua /usr/share/phpldapadmin/htdocs.orig/. /usr/share/phpldapadmin/htdocs/; \
-    exec /usr/sbin/php-fpm8.2 -c /etc/php/8.2/fpm/php.ini -d 'error_reporting=E_COMPILE_ERROR|E_RECOVERABLE_ERROR|E_ERROR|E_CORE_ERROR'
+CMD ["sh", "-c", "set -eu; cp -ua /usr/share/phpldapadmin/htdocs.orig/. /usr/share/phpldapadmin/htdocs/; exec /usr/sbin/php-fpm8.2 -c /etc/php/8.2/fpm/php.ini -d 'error_reporting=E_COMPILE_ERROR|E_RECOVERABLE_ERROR|E_ERROR|E_CORE_ERROR'"]
